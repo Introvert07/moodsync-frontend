@@ -1,10 +1,10 @@
 import React from 'react';
-import { Music, ExternalLink, Activity, Info } from 'lucide-react';
+import { Music, ExternalLink, Activity, Info, PlayCircle } from 'lucide-react';
 
 const ResultCard = ({ result }) => {
   if (!result) return null;
 
-  // Color mapping based on the emotion returned by her Python code
+  // Color mapping based on the emotion returned by the Python code
   const getMoodColor = (emo) => {
     const colors = {
       happy: 'from-yellow-400 to-orange-500',
@@ -25,7 +25,7 @@ const ResultCard = ({ result }) => {
         
         <div className="flex flex-col items-center gap-2">
           <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-white/40 mb-2 flex items-center gap-2">
-            <Activity size={12} className="text-pink-400" /> AI Detection Results
+            <Activity size={12} className="text-red-500" /> AI Detection Results
           </span>
           
           <h2 className={`text-4xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r ${getMoodColor(result.emotion)} mb-4`}>
@@ -34,56 +34,64 @@ const ResultCard = ({ result }) => {
 
           <div className="flex flex-wrap justify-center gap-3">
             <div className="px-4 py-1.5 bg-white/5 rounded-full border border-white/10 flex items-center gap-2 text-white/80 text-sm">
-              <span className="w-2 h-2 rounded-full bg-pink-500 animate-pulse" />
+              <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
               Mood: <span className="text-white font-bold">{result.mood}</span>
             </div>
             <div className="px-4 py-1.5 bg-white/5 rounded-full border border-white/10 flex items-center gap-2 text-white/80 text-sm">
               Language: <span className="text-white font-bold">{result.language === 'hi' ? 'Hindi' : 'English'}</span>
             </div>
-            <div className="px-4 py-1.5 bg-white/5 rounded-full border border-white/10 flex items-center gap-2 text-white/80 text-sm">
-              Analysis: <span className="text-white font-bold capitalize">{result.method}</span>
-            </div>
+            {result.method && (
+                <div className="px-4 py-1.5 bg-white/5 rounded-full border border-white/10 flex items-center gap-2 text-white/80 text-sm">
+                    Analysis: <span className="text-white font-bold capitalize">{result.method}</span>
+                </div>
+            )}
           </div>
         </div>
       </div>
 
       {/* Playlist Grid */}
       <div className="flex items-center gap-2 mb-6 ml-4">
-        <Music className="text-pink-400" size={20} />
-        <h3 className="text-white font-bold text-xl tracking-tight">Personalized Playlists</h3>
+        <PlayCircle className="text-red-500" size={24} />
+        <h3 className="text-white font-bold text-xl tracking-tight">YouTube Music Playlists</h3>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-        {result.playlists.map((playlist, idx) => (
+        {result.playlists && result.playlists.map((playlist, idx) => (
           <a
             key={idx}
             href={playlist.url}
             target="_blank"
             rel="noreferrer"
-            className="group relative bg-white/5 border border-white/10 rounded-[2rem] overflow-hidden hover:bg-white/10 transition-all hover:-translate-y-3 hover:shadow-[0_20px_50px_rgba(0,0,0,0.5)] flex flex-col"
+            className="group relative bg-white/5 border border-white/10 rounded-[2rem] overflow-hidden hover:bg-white/10 transition-all hover:-translate-y-3 hover:shadow-[0_20px_50px_rgba(255,0,0,0.2)] flex flex-col"
           >
             {/* Image Container */}
             <div className="relative aspect-square overflow-hidden">
               <img
-                src={playlist.image || 'https://via.placeholder.com/300'}
+                src={playlist.image || 'https://images.unsplash.com/photo-1614680376593-902f74cc0d41?w=400'}
                 alt={playlist.name}
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent opacity-60" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80" />
               
-              {/* Spotify Icon Overlay */}
-              <div className="absolute top-4 right-4 p-2 bg-green-500 rounded-full text-black shadow-lg translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
+              {/* YouTube Music Icon Overlay */}
+              <div className="absolute top-4 right-4 p-2 bg-red-600 rounded-full text-white shadow-lg translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
                 <ExternalLink size={18} />
+              </div>
+
+              {/* Play Badge */}
+              <div className="absolute bottom-4 left-4 flex items-center gap-2 bg-black/60 backdrop-blur-md px-3 py-1 rounded-full border border-white/10">
+                <PlayCircle size={14} className="text-red-500" />
+                <span className="text-white text-[10px] font-bold uppercase tracking-wider">Play Now</span>
               </div>
             </div>
             
             {/* Playlist Info */}
             <div className="p-6">
-              <h4 className="font-bold text-white text-lg group-hover:text-pink-400 transition-colors line-clamp-1">
+              <h4 className="font-bold text-white text-lg group-hover:text-red-500 transition-colors line-clamp-2">
                 {playlist.name}
               </h4>
               <p className="text-white/40 text-xs mt-2 uppercase tracking-widest font-semibold flex items-center gap-2">
-                Curated for your mood
+                YouTube Music Selection
               </p>
             </div>
           </a>
@@ -91,7 +99,7 @@ const ResultCard = ({ result }) => {
       </div>
 
       <p className="text-center text-white/20 text-[10px] mt-12 uppercase tracking-[0.3em] flex items-center justify-center gap-2">
-        <Info size={10} /> Data processed by Her-Python-Backend v2.0
+        <Info size={10} /> Data processed by MoodSync AI Backend v2.0
       </p>
     </div>
   );
